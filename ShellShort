@@ -1,0 +1,32 @@
+def ShellSort(arr):
+    h = 1
+    while 3 * h + 1 < len(arr):
+        h = 3 * h + 1 #creating the 4 block intervals
+    
+    nShifts = 0
+    while h > 0:
+        for outer in range(h, len(arr)):
+            temp = arr[outer]
+            inner = outer
+            
+            # Shift elements until the correct location for temp is found
+            while inner >= h and temp < arr[inner - h]:
+                arr[inner] = arr[inner - h] 
+                inner -= h
+                nShifts += 1
+            
+            # The shift/movement counter
+            if inner != outer:
+                arr[inner] = temp
+                nShifts += 1
+        
+        h = (h - 1) // 3  
+    return nShifts
+
+# Mini dataset along with the amounf of shifts/movements
+# data = [38, 27, 43, 3, 9, 82, 10] -- 12
+data = [94, 12, 55, 34, 88, 1, 47, 99, 23, 76, 15, 62, 3, 44, 81, 10, 5, 29, 68, 33, 51, 8, 92, 17, 40, 71, 2, 59, 84, 21, 66, 37, 78, 11, 49, 95, 6, 28, 53, 87,14, 60, 4, 42, 80, 20, 7, 31, 65, 39, 74, 9, 91, 19, 41, 70, 22, 57, 83, 25,63, 35, 77, 13, 48, 96, 16, 30, 52, 86, 18, 58, 85, 26, 61, 38, 73, 27, 54, 89, 43, 82, 32, 67, 36, 75, 45, 98, 24, 69, 50, 93, 46, 79, 56, 90, 64, 72, 97, 100]
+
+shifts = ShellSort(data)
+print(f"Sorted array: {data}")
+print(f"Total shifts performed: {shifts}")
