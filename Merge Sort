@@ -1,0 +1,58 @@
+def merge_sort(arr):
+    # Base case: no shifts needed for 1 or 0 elements
+    if len(arr) <= 1:
+        return arr, 0
+
+    mid = len(arr) // 2
+    
+    # Retrieve the sorted halves and the shift/movement count
+    left, left_shifts = merge_sort(arr[:mid])
+    right, right_shifts = merge_sort(arr[mid:])
+
+    # Merge them and get the shifts from this specific merge
+    merged_arr, merge_shifts = merge(left, right)
+    
+    # Total shifts = shifts from left + shifts from right + shifts during merge
+    total_shifts = left_shifts + right_shifts + merge_shifts
+    
+    return merged_arr, total_shifts
+
+def merge(left, right):
+    result = []
+    i, j = 0, 0
+    shifts = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+        shifts += 1 # shift/movement counter
+        
+    # Append remaining elements
+    remaining_left = left[i:]
+    remaining_right = right[j:]
+    
+    result.extend(remaining_left)
+    result.extend(remaining_right)
+    
+    # Count the remaining placements
+    shifts += len(remaining_left) + len(remaining_right)
+    
+    return result, shifts
+
+# Mini dataset along with the amounf of shifts/movements
+# data = [38, 27, 43, 3, 9, 82, 10] -- 20
+data = [
+    94, 12, 55, 34, 88, 1, 47, 99, 23, 76, 15, 62, 3, 44, 81, 10, 5, 29, 68, 33,
+    51, 8, 92, 17, 40, 71, 2, 59, 84, 21, 66, 37, 78, 11, 49, 95, 6, 28, 53, 87,
+    14, 60, 4, 42, 80, 20, 7, 31, 65, 39, 74, 9, 91, 19, 41, 70, 22, 57, 83, 25,
+    63, 35, 77, 13, 48, 96, 16, 30, 52, 86, 18, 58, 85, 26, 61, 38, 73, 27, 54, 89,
+    43, 82, 32, 67, 36, 75, 45, 98, 24, 69, 50, 93, 46, 79, 56, 90, 64, 72, 97, 100
+]
+
+sorted_arr, total_moves = merge_sort(data)
+print(f"Sorted array: {sorted_arr}")
+print(f"Total movements/shifts: {total_moves}")
